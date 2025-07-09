@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - SweetHub</title>
+  <style>
+    body {
+      background-color: #121212;
+      font-family: Arial, sans-serif;
+      color: white;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #adff2f;
+    }
+    .actions {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .actions a {
+      background: #adff2f;
+      color: #000;
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin: 5px;
+      display: inline-block;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .actions a:hover {
+      background: #cfff5e;
+    }
+    form {
+      background-color: #1e1e1e;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 15px;
+      max-width: 600px;
+    }
+    form h3 {
+      color: #adff2f;
+    }
+    form label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    form input,
+    form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: none;
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    form button {
+      background-color: #adff2f;
+      color: #000;
+      padding: 10px 20px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    form button:hover {
+      background-color: #cfff5e;
+    }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .video-card {
+      background-color: #1f1f1f;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 0 8px #adff2f66;
+    }
+    .video-card video,
+    .video-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .video-info {
+      margin-top: 10px;
+    }
+    .video-info p {
+      margin: 5px 0;
+    }
+    .video-info strong {
+      color: #adff2f;
+    }
+    .delete-button {
+      background-color: #ff4f4f;
+      color: white;
+      padding: 10px;
+      margin-top: 10px;
+      display: block;
+      text-align: center;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .delete-button:hover {
+      background-color: #ff7777;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Welcome Admin ({{ session.username }})</h2>
+
+  <div class="actions">
+    <a href="#uploadForm">➕ Upload New Video</a>
+    <a href="{{ url_for('logout') }}">🔐 Logout</a>
+  </div>
+
+  <!-- Upload Form -->
+  <form id="uploadForm" action="{{ url_for('upload_video') }}" method="POST" enctype="multipart/form-data">
+    <h3>🚀 Upload New Video</h3>
+
+    <label>Title:</label>
+    <input type="text" name="title" required>
+
+    <label>Category:</label>
+    <select name="category" required>
+      {% for cat in categories %}
+        <option value="{{ cat }}">{{ cat }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Version:</label>
+    <select name="version" required>
+      {% for ver in versions %}
+        <option value="{{ ver }}">{{ ver }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Country:</label>
+    <select name="country" required>
+      {% for country in countries %}
+        <option value="{{ country }}">{{ country }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Tags (comma separated):</label>
+    <input type="text" name="tags">
+
+    <label>Video File (.mp4):</label>
+    <input type="file" name="video" accept="video/mp4" required>
+
+    <label>Thumbnail Image (.jpg, .png):</label>
+    <input type="file" name="thumbnail" accept="image/*" required>
+
+    <div class="checkbox-label">
+      <input type="checkbox" name="is_premium" value="1" id="is_premium">
+      <label for="is_premium">Mark as Premium 💎</label>
+    </div>
+
+    <button type="submit">Upload</button>
+  </form>
+
+  <!-- Video List -->
+  <div class="video-grid">
+    {% for video in videos %}
+      <div class="video-card">
+        {% if video.thumbnail %}
+          <img src="{{ url_for('static', filename='uploads/' ~ video.thumbnail) }}" alt="Thumbnail">
+        {% else %}
+          <video src="{{ url_for('static', filename='uploads/' ~ video.filename) }}" controls></video>
+        {% endif %}
+        <div class="video-info">
+          <p><strong>Title:</strong> {{ video.title }}</p>
+          <p><strong>Category:</strong> {{ video.category }}</p>
+          <p><strong>Country:</strong> {{ video.country }}</p>
+          <p><strong>Version:</strong> {{ video.version }}</p>
+          <p><strong>Views:</strong> {{ video.views }} | <strong>Likes:</strong> {{ video.likes }}</p>
+          {% if video.is_premium %}
+            <p style="color:#adff2f;font-weight:bold;">💎 Premium Video</p>
+          {% endif %}
+        </div>
+        <a class="delete-button" href="{{ url_for('delete_video', video_id=video.id) }}">🗑 Delete Video</a>
+      </div>
+    {% endfor %}
+  </div>
+
+</body>
+</html>

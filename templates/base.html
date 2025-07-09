@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SweetHub</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #eee;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .topbar {
+            background-color: #111;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: #adff2f;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .search-bar {
+            flex: 1;
+            margin: 10px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: none;
+            font-size: 16px;
+        }
+
+        .auth-links a {
+            color: #adff2f;
+            margin-left: 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        .categories {
+            background-color: #111;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 10px;
+        }
+
+        .categories button {
+            background-color: #333;
+            color: #ccc;
+            border: none;
+            margin: 5px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .categories button:hover {
+            background-color: #555;
+            color: #adff2f;
+        }
+
+        .section-title {
+            color: #adff2f;
+            margin: 20px;
+            font-size: 20px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 0 20px 40px;
+        }
+
+        .video-card {
+            background-color: #111;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(0,0,0,0.6);
+        }
+
+        .video-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .video-info {
+            padding: 10px;
+        }
+
+        .video-info h4 {
+            color: #fff;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .video-info span {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        /* 🔽 Live Cams Dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown a {
+            color: #adff2f;
+            text-decoration: none;
+            padding: 8px 12px;
+            font-weight: bold;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            min-width: 240px;
+            z-index: 999;
+            top: 100%;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: #fff;
+            padding: 8px 12px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dropdown-content a img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #333;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Age verification popup -->
+    <div id="agePopup" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000000e6;display:flex;justify-content:center;align-items:center;z-index:9999;">
+        <div style="background:#111;padding:30px;border-radius:10px;text-align:center;max-width:400px;">
+            <h2 style="color:#adff2f;">🔞 Age Verification</h2>
+            <p>You must be 18 years or older to enter SweetHub.</p>
+            <button onclick="acceptAge()" style="margin-top:20px;padding:10px 20px;font-size:16px;background:#adff2f;border:none;border-radius:5px;">I’m 18+</button>
+        </div>
+    </div>
+
+    <script>
+        function acceptAge() {
+            localStorage.setItem("ageConfirmed", "yes");
+            document.getElementById("agePopup").style.display = "none";
+        }
+        window.onload = function () {
+            if (localStorage.getItem("ageConfirmed") === "yes") {
+                document.getElementById("agePopup").style.display = "none";
+            }
+        }
+    </script>
+
+    <!-- Top bar -->
+    <div class="topbar">
+        <div class="logo">SweetHub</div>
+
+        <form class="search-bar" action="{{ url_for('search') }}" method="GET">
+            <input type="text" name="q" placeholder="Search videos by title or tags..." required>
+        </form>
+
+        <div class="auth-links">
+            {% if session.get('username') %}
+                <a href="{{ url_for('channel', username=session['username']) }}">📺 My Channel</a>
+                <a href="{{ url_for('messenger') }}">💬 Messenger</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+
+                {% if session.get('is_admin') %}
+                    <a href="{{ url_for('admin') }}">Admin</a>
+                    <a href="{{ url_for('upload_video') }}">Upload</a>
+                {% endif %}
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+                <a href="{{ url_for('register_model') }}">Become a Model</a>
+            {% endif %}
+
+            <!-- ✅ Games Tab -->
+            <a href="{{ url_for('games') }}">🎮 Games</a>
+
+            <!-- ✅ Live Cams Dropdown -->
+            <div class="dropdown">
+               <a href="{{ url_for('livecams') }}">📹 Live Cams ▾</a>
+
+                <div class="dropdown-content">
+                    <a href="https://chaturbate.com/in/?tour=hr8m&campaign=cam1" target="_blank">
+                        <img src="https://roomimg.stream.highwebmedia.com/ri/goddessjasmine.jpg" alt="Jasmine"> Goddess Jasmine
+                    </a>
+                    <a href="https://stripchat.com" target="_blank">
+                        <img src="https://static.stripcdn.com/room_images/rooms/600/00/21/71/1/preview.jpg" alt="Candy"> MILF Candy
+                    </a>
+                    <a href="https://www.livehdcams.com" target="_blank">
+                        <img src="https://www.livehdcams.com/thumbs/hotcam1.jpg" alt="Sasha"> Sasha – LiveHD
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories">
+        {% for cat in categories %}
+            <form style="display:inline;" action="{{ url_for('filter_videos') }}" method="GET">
+                <input type="hidden" name="category" value="{{ cat }}">
+                <button type="submit">{{ cat }}</button>
+            </form>
+        {% endfor %}
+    </div>
+
+    <!-- Latest Videos Section -->
+    <div class="section-title">🔥 Latest Videos</div>
+
+    <div class="video-grid">
+        {% for video in videos %}
+            <div class="video-card">
+                <a href="{{ url_for('watch_video', video_id=video.id) }}">
+                    <img src="{{ url_for('static', filename='uploads/' ~ video.thumbnail) }}" alt="{{ video.title }}">
+                </a>
+                <div class="video-info">
+                    <h4>{{ video.title }}</h4>
+                    <span>Views: {{ video.views }} | Likes: {{ video.likes }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Hover Preview Script -->
+    <script>
+      document.querySelectorAll('.hover-preview').forEach(video => {
+        video.addEventListener('mouseenter', () => {
+          video.currentTime = 2;
+          video.play();
+        });
+
+        video.addEventListener('mouseleave', () => {
+          video.pause();
+          video.currentTime = 0;
+        });
+      });
+    </script>
+
+   <!-- Popup Game Ad (non-intrusive) -->
+   <div id="popupAd" style="display:none; position: fixed; bottom: 20px; right: 20px; width: 300px; background-color: black; border: 2px solid #ADFF2F; padding: 15px; border-radius: 10px; z-index: 9999; text-align: center;">
+       <h4 style="color: #ADFF2F; margin: 5px 0;">🔥 Hot Adult Games</h4>
+       <p style="color: white; font-size: 14px;">Play free sex games now</p>
+       <a href="https://www.sexgamesbox.com" target="_blank" style="background-color: #ADFF2F; padding: 8px 16px; color: black; border-radius: 6px; text-decoration: none; font-weight: bold;">Play Now</a>
+   </div>
+
+   <script>
+   window.onload = function() {
+       if (localStorage.getItem("ageConfirmed") === "yes") {
+           setTimeout(function() {
+               const ad = document.getElementById("popupAd");
+               ad.style.display = "block";
+
+               setTimeout(function() {
+                   ad.style.display = "none";
+               }, 5000);
+           }, 3000);
+       }
+   };
+   </script>
+
+    <!-- Hover Preview Style -->
+    <style>
+      .hover-preview {
+        width: 100%;
+        max-height: 180px;
+        border-radius: 10px;
+        object-fit: cover;
+        transition: transform 0.2s ease;
+      }
+
+      .hover-preview:hover {
+        transform: scale(1.01);
+      }
+
+      .video-preview {
+        overflow: hidden;
+      }
+    </style>
+
+</body>
+</html>

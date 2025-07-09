@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 style="color:#ADFF2F;text-align:center;margin-top:20px;">🎮 Adult Game Collection</h2>
+
+<!-- Search and Categories -->
+<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:20px;">
+    <form action="" method="GET">
+        <input type="text" name="q" placeholder="Search games..." style="padding:8px 16px;border-radius:5px;border:none;font-size:16px;">
+        <button type="submit" style="padding:8px 16px;background:#ADFF2F;border:none;border-radius:5px;font-weight:bold;">Search</button>
+    </form>
+
+    <form action="" method="GET">
+        <input type="hidden" name="category" value="RPG">
+        <button type="submit" style="background:#333;color:#ccc;padding:8px 12px;border:none;border-radius:20px;cursor:pointer;">🎲 RPG</button>
+    </form>
+    <form action="" method="GET">
+        <input type="hidden" name="category" value="3D">
+        <button type="submit" style="background:#333;color:#ccc;padding:8px 12px;border:none;border-radius:20px;cursor:pointer;">🧍‍♀️ 3D</button>
+    </form>
+    <form action="" method="GET">
+        <input type="hidden" name="category" value="Hentai">
+        <button type="submit" style="background:#333;color:#ccc;padding:8px 12px;border:none;border-radius:20px;cursor:pointer;">🍥 Hentai</button>
+    </form>
+</div>
+
+<!-- Game Thumbnails Grid -->
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;padding:20px;">
+    {% set games = [
+        {"title":"Boob Clicker","thumb":"https://i.postimg.cc/zDTv2vZ1/adultgame1.jpg","url":"https://www.sexgamesbox.com/play/boob-clicker/","category":"Clicker"},
+        {"title":"Fuck Town","thumb":"https://i.postimg.cc/kMbMn0YY/fucktown.jpg","url":"https://www.sexgamesbox.com/play/fuck-town/","category":"RPG"},
+        {"title":"Booty Farm","thumb":"https://i.postimg.cc/1z0GKXfZ/bootyfarm.jpg","url":"https://www.sexgamesbox.com/play/booty-farm/","category":"3D"},
+        {"title":"Sex Island","thumb":"https://i.postimg.cc/zvq9S9t2/sexisland.jpg","url":"https://www.sexgamesbox.com/play/sex-island/","category":"3D"},
+        {"title":"College Life","thumb":"https://i.postimg.cc/PfgTt9NB/college.jpg","url":"https://www.sexgamesbox.com/play/college-life/","category":"RPG"},
+        {"title":"Hentai Nights","thumb":"https://i.postimg.cc/Zq0knmkg/hentai.jpg","url":"https://www.sexgamesbox.com/play/hentai-nights/","category":"Hentai"}
+    ] %}
+
+    {% for game in games %}
+        {% if not request.args.get('category') or game.category == request.args.get('category') %}
+            {% if not request.args.get('q') or request.args.get('q').lower() in game.title.lower() %}
+                <div class="game-card" style="background:#111;padding:10px;border-radius:10px;text-align:center;">
+                    <a href="#" onclick="loadGame('{{ game.url }}')">
+                        <img src="{{ game.thumb }}" class="hover-preview" style="width:100%;height:150px;border-radius:10px;object-fit:cover;" alt="{{ game.title }}">
+                    </a>
+                    <h4 style="color:#ADFF2F;margin-top:10px;">{{ game.title }}</h4>
+                    <span style="font-size:13px;color:#aaa;">{{ game.category }}</span>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</div>
+
+<!-- Embedded game preview -->
+<div style="padding:20px;">
+    <iframe id="gameFrame" src="https://www.sexgamesbox.com/play/boob-clicker/" width="100%" height="600px" style="border:none;border-radius:10px;"></iframe>
+</div>
+
+<script>
+function loadGame(url) {
+    document.getElementById('gameFrame').src = url;
+}
+
+// Optional: Hover preview effect (like Pornhub ads)
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.hover-preview').forEach(img => {
+        img.addEventListener('mouseenter', () => {
+            img.style.filter = 'brightness(1.2)';
+        });
+        img.addEventListener('mouseleave', () => {
+            img.style.filter = 'none';
+        });
+    });
+});
+</script>
+
+{% endblock %}

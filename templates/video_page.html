@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Videos - SweetHub</title>
+  <style>
+    body {
+      background-color: #121212;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #adff2f;
+      margin-bottom: 30px;
+    }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .video-card {
+      background-color: #1f1f1f;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #adff2f33;
+      padding: 10px;
+    }
+    .video-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .video-title {
+      color: #adff2f;
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    .meta {
+      font-size: 13px;
+      color: #ccc;
+    }
+    .meta span {
+      margin-right: 8px;
+    }
+    .watch-link {
+      display: block;
+      margin-top: 10px;
+      padding: 8px;
+      background: #adff2f;
+      text-align: center;
+      border-radius: 8px;
+      font-weight: bold;
+      color: black;
+      text-decoration: none;
+    }
+    .watch-link:hover {
+      background-color: #dfff4f;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>All Videos</h2>
+
+  <div class="video-grid">
+    {% for video in videos %}
+    <div class="video-card">
+      <img src="{{ url_for('static', filename='uploads/' ~ video.thumbnail) }}" alt="{{ video.title }}">
+      <div class="video-title">{{ video.title }}</div>
+      <div class="meta">
+        <span>👁 {{ video.views }}</span>
+        <span>👍 {{ video.likes }}</span>
+        <span>📂 {{ video.category }}</span>
+        <span>🌍 {{ video.country }}</span>
+      </div>
+      <a class="watch-link" href="{{ url_for('watch_video', video_id=video.id) }}">▶ Watch</a>
+    </div>
+    {% endfor %}
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Video - SweetHub</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+    h2 {
+      text-align: center;
+      color: #adff2f;
+    }
+    form {
+      max-width: 600px;
+      margin: auto;
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 15px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #ccc;
+    }
+    input[type="text"],
+    textarea,
+    select,
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #2a2a2a;
+      color: white;
+      border: 1px solid #333;
+      border-radius: 8px;
+      margin-top: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: #adff2f;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #cfff5e;
+    }
+    .premium-box {
+      margin-top: 20px;
+    }
+    .premium-box label {
+      display: inline-block;
+      color: #adff2f;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Upload New Video</h2>
+
+<form method="POST" action="{{ url_for('upload_video') }}" enctype="multipart/form-data">
+  <label>Title</label>
+  <input type="text" name="title" required>
+
+  <label>Category</label>
+  <select name="category" required>
+    {% for cat in categories %}
+      <option value="{{ cat }}">{{ cat }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Version</label>
+  <select name="version" required>
+    {% for ver in versions %}
+      <option value="{{ ver }}">{{ ver }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Country</label>
+  <select name="country" required>
+    {% for c in countries %}
+      <option value="{{ c }}">{{ c }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Tags (comma-separated)</label>
+  <input type="text" name="tags" placeholder="e.g. teen, amateur, hd">
+
+  <label>Thumbnail Image</label>
+  <input type="file" name="thumbnail" accept="image/*">
+
+  <label>Upload Video File (MP4)</label>
+  <input type="file" name="video" accept="video/*">
+
+  <label>OR Embed Video Code (Iframe HTML)</label>
+<textarea name="embed_code" placeholder='<iframe src="...">' style="height: 100px; background-color: #2a2a2a; color: white; border: 1px solid #333; border-radius: 8px; margin-top: 5px;"></textarea>
+
+  <label>Make this video premium?</label>
+
+  <select name="is_premium">
+    <option value="0">No</option>
+    <option value="1">Yes</option>
+  </select>
+
+  <button type="submit">Upload / Add Video</button>
+</form>
+
+</body>
+</html>

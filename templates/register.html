@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - SweetHub</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .form-container {
+      max-width: 500px;
+      margin: 50px auto;
+      background-color: #1f1f1f;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #adff2f55;
+    }
+
+    h2 {
+      text-align: center;
+      color: #adff2f;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="number"],
+    input[type="file"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: none;
+      background-color: #2b2b2b;
+      color: white;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #adff2f;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #dfff66;
+    }
+
+    .login-link {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .login-link a {
+      color: #adff2f;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Create Your SweetHub Account</h2>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+      <label for="username">Username</label>
+      <input type="text" name="username" required>
+
+      <label for="password">Password</label>
+      <input type="password" name="password" required>
+
+      <label for="confirm">Confirm Password</label>
+      <input type="password" name="confirm" required>
+
+      <label for="age">Age</label>
+      <input type="number" name="age" min="18" value="18" required>
+
+      <label for="gender">Gender</label>
+      <select name="gender">
+        <option>Not specified</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+
+      <label for="country">Country</label>
+      <select name="country">
+        <option value="">-- Select Country --</option>
+        <option>Ghana</option>
+        <option>USA</option>
+        <option>UK</option>
+        <option>India</option>
+        <option>Germany</option>
+        <option>France</option>
+        <option>Japan</option>
+        <option>Brazil</option>
+        <option>Canada</option>
+        <option>South Africa</option>
+      </select>
+
+      <label for="telegram">Telegram Username (optional)</label>
+      <input type="text" name="telegram" placeholder="@yourusername">
+
+      <label for="bio">Short Bio</label>
+      <textarea name="bio" rows="3" placeholder="Tell us a little about yourself..."></textarea>
+
+      <label for="profile_pic">Profile Picture</label>
+      <input type="file" name="profile_pic" accept="image/*">
+
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="login-link">
+      <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+    </div>
+  </div>
+
+</body>
+</html>

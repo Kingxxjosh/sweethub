@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ video.title }} - SweetHub</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .video-container {
+      max-width: 900px;
+      margin: auto;
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    h2 {
+      color: #adff2f;
+    }
+
+    iframe, video {
+      width: 100%;
+      height: 500px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .info {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #ccc;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #adff2f;
+      color: #000;
+      font-weight: bold;
+      border-radius: 10px;
+      text-decoration: none;
+      margin-top: 15px;
+    }
+
+    .like-buttons {
+      margin: 20px 0;
+    }
+
+    .like-buttons form {
+      display: inline-block;
+      margin-right: 15px;
+    }
+
+    .like-buttons button {
+      background-color: #adff2f;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .like-buttons button:hover {
+      background-color: #cfff5e;
+    }
+
+    .comments {
+      margin-top: 30px;
+    }
+
+    .comments h3 {
+      color: #adff2f;
+      margin-bottom: 10px;
+    }
+
+    .comment-box {
+      background-color: #2a2a2a;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .comment-box p {
+      margin: 5px 0;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      background: #1a1a1a;
+      color: white;
+      border: none;
+      resize: vertical;
+    }
+
+    .submit-comment {
+      margin-top: 10px;
+      background: #adff2f;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit-comment:hover {
+      background-color: #cfff5e;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="video-container">
+  <h2>{{ video.title }}</h2>
+
+  {% if video.is_premium and not session.get('is_premium') %}
+    <div style="background-color: #1a1a1a; padding: 30px; border-radius: 10px; text-align: center;">
+      <h3 style="color: #ff5050;">🔐 This is a Premium Video</h3>
+      <p style="color: #ccc;">Please subscribe to access this premium content.</p>
+      <a href="/login" style="color: #adff2f;">Login</a> | 
+      <a href="/subscribe" style="color: #adff2f;">Subscribe</a>
+    </div>
+  {% else %}
+    {% if video.embed_code %}
+      {{ video.embed_code|safe }}
+    {% else %}
+      <video controls poster="{{ url_for('uploaded_file', filename=video.thumbnail) }}">
+        <source src="{{ url_for('uploaded_file', filename=video.filename) }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    {% endif %}
+  {% endif %}
+
+  <div class="info">
+    <strong>Category:</strong> {{ video.category }} |
+    <strong>Version:</strong> {{ video.version }} |
+    <strong>Country:</strong> {{ video.country }} |
+    <strong>Tags:</strong> {{ video.tags }} |
+    <strong>Views:</strong> {{ video.views }} |
+    <strong>Likes:</strong> {{ video.likes }}
+  </div>
+
+  <!-- Like/Dislike Buttons -->
+  {% if session.get('username') %}
+  <div class="like-buttons">
+    <form action="{{ url_for('like_video', video_id=video.id) }}" method="POST">
+      <button type="submit">👍 Like</button>
+    </form>
+    <form action="{{ url_for('dislike_video', video_id=video.id) }}" method="POST">
+      <button type="submit">👎 Dislike</button>
+    </form>
+  </div>
+  {% else %}
+  <p style="color:#999;">Login to like or dislike videos.</p>
+  {% endif %}
+
+  <!-- Comments Section -->
+  <div class="comments">
+    <h3>💬 Comments</h3>
+
+    {% for comment in comments %}
+      <div class="comment-box">
+        <p><strong>{{ comment.username }}</strong>:</p>
+        <p>{{ comment.text }}</p>
+      </div>
+    {% endfor %}
+
+    {% if session.get('username') %}
+      <form action="{{ url_for('add_comment', video_id=video.id) }}" method="POST">
+        <textarea name="comment_text" rows="3" placeholder="Leave a comment..." required></textarea>
+        <button type="submit" class="submit-comment">Post Comment</button>
+      </form>
+    {% else %}
+      <p style="color:#999;">Login to post a comment.</p>
+    {% endif %}
+  </div>
+
+  <a href="{{ url_for('home') }}" class="back-btn">⬅ Back to Home</a>
+</div>
+
+</body>
+</html>

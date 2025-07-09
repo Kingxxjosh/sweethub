@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ category }} - Filtered Results | SweetHub</title>
+    <style>
+        body { background-color: #000; color: #eee; font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .container { max-width: 1000px; margin: auto; padding: 20px; }
+        h2 { color: #adff2f; margin-bottom: 15px; }
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .video-card { background: #111; border-radius: 10px; overflow: hidden; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        .video-card img { width: 100%; height: 120px; object-fit: cover; }
+        .video-card .info { padding: 10px; }
+        .video-card .info h4 { color: #fff; margin: 0 0 5px; font-size: 16px; }
+        .video-card .info span { font-size: 12px; color: #999; }
+        a { color: inherit; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>📂 Showing results for: {{ category }}</h2>
+    {% if videos %}
+    <div class="video-grid">
+        {% for video in videos %}
+        <a href="{{ url_for('watch_video', video_id=video.id) }}" class="video-card">
+            <img src="{{ url_for('static', filename='uploads/' + video.thumbnail) }}" alt="{{ video.title }}">
+            <div class="info">
+                <h4>{{ video.title }}</h4>
+                <span>{{ video.views }} views • 👍 {{ video.likes }}</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="color:#f55;">❌ No videos found for this filter.</p>
+    {% endif %}
+</div>
+</body>
+</html>
