@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SweetHub</title>
     <style>
         body {
@@ -34,17 +35,24 @@
 
         .search-bar input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             border-radius: 4px;
             border: none;
             font-size: 16px;
         }
 
+        .auth-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
         .auth-links a {
             color: #adff2f;
-            margin-left: 15px;
             text-decoration: none;
             font-weight: bold;
+            font-size: 14px;
         }
 
         .auth-links a:hover {
@@ -82,7 +90,7 @@
 
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 15px;
             padding: 0 20px 40px;
         }
@@ -96,7 +104,7 @@
 
         .video-card img {
             width: 100%;
-            height: 150px;
+            height: auto;
             object-fit: cover;
         }
 
@@ -115,10 +123,8 @@
             color: #aaa;
         }
 
-        /* 🔽 Live Cams Dropdown */
         .dropdown {
             position: relative;
-            display: inline-block;
         }
 
         .dropdown a {
@@ -160,11 +166,32 @@
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
+        @media screen and (max-width: 768px) {
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+
+            .auth-links {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Age verification popup -->
     <div id="agePopup" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000000e6;display:flex;justify-content:center;align-items:center;z-index:9999;">
         <div style="background:#111;padding:30px;border-radius:10px;text-align:center;max-width:400px;">
             <h2 style="color:#adff2f;">🔞 Age Verification</h2>
@@ -185,20 +212,16 @@
         }
     </script>
 
-    <!-- Top bar -->
     <div class="topbar">
         <div class="logo">SweetHub</div>
-
         <form class="search-bar" action="{{ url_for('search') }}" method="GET">
             <input type="text" name="q" placeholder="Search videos by title or tags..." required>
         </form>
-
         <div class="auth-links">
             {% if session.get('username') %}
                 <a href="{{ url_for('channel', username=session['username']) }}">📺 My Channel</a>
                 <a href="{{ url_for('messenger') }}">💬 Messenger</a>
                 <a href="{{ url_for('logout') }}">Logout</a>
-
                 {% if session.get('is_admin') %}
                     <a href="{{ url_for('admin') }}">Admin</a>
                     <a href="{{ url_for('upload_video') }}">Upload</a>
@@ -208,30 +231,24 @@
                 <a href="{{ url_for('register') }}">Register</a>
                 <a href="{{ url_for('register_model') }}">Become a Model</a>
             {% endif %}
-
-            <!-- ✅ Games Tab -->
             <a href="{{ url_for('games') }}">🎮 Games</a>
-
-            <!-- ✅ Live Cams Dropdown -->
             <div class="dropdown">
                <a href="{{ url_for('livecams') }}">📹 Live Cams ▾</a>
-
-                <div class="dropdown-content">
-                    <a href="https://chaturbate.com/in/?tour=hr8m&campaign=cam1" target="_blank">
-                        <img src="https://roomimg.stream.highwebmedia.com/ri/goddessjasmine.jpg" alt="Jasmine"> Goddess Jasmine
-                    </a>
-                    <a href="https://stripchat.com" target="_blank">
-                        <img src="https://static.stripcdn.com/room_images/rooms/600/00/21/71/1/preview.jpg" alt="Candy"> MILF Candy
-                    </a>
-                    <a href="https://www.livehdcams.com" target="_blank">
-                        <img src="https://www.livehdcams.com/thumbs/hotcam1.jpg" alt="Sasha"> Sasha – LiveHD
-                    </a>
-                </div>
+               <div class="dropdown-content">
+                   <a href="https://chaturbate.com/in/?tour=hr8m&campaign=cam1" target="_blank">
+                       <img src="https://roomimg.stream.highwebmedia.com/ri/goddessjasmine.jpg" alt="Jasmine"> Goddess Jasmine
+                   </a>
+                   <a href="https://stripchat.com" target="_blank">
+                       <img src="https://static.stripcdn.com/room_images/rooms/600/00/21/71/1/preview.jpg" alt="Candy"> MILF Candy
+                   </a>
+                   <a href="https://www.livehdcams.com" target="_blank">
+                       <img src="https://www.livehdcams.com/thumbs/hotcam1.jpg" alt="Sasha"> Sasha – LiveHD
+                   </a>
+               </div>
             </div>
         </div>
     </div>
 
-    <!-- Categories -->
     <div class="categories">
         {% for cat in categories %}
             <form style="display:inline;" action="{{ url_for('filter_videos') }}" method="GET">
@@ -241,7 +258,6 @@
         {% endfor %}
     </div>
 
-    <!-- Latest Videos Section -->
     <div class="section-title">🔥 Latest Videos</div>
 
     <div class="video-grid">
@@ -258,61 +274,26 @@
         {% endfor %}
     </div>
 
-    <!-- Hover Preview Script -->
-    <script>
-      document.querySelectorAll('.hover-preview').forEach(video => {
-        video.addEventListener('mouseenter', () => {
-          video.currentTime = 2;
-          video.play();
-        });
-
-        video.addEventListener('mouseleave', () => {
-          video.pause();
-          video.currentTime = 0;
-        });
-      });
-    </script>
-
-   <!-- Popup Game Ad (non-intrusive) -->
-   <div id="popupAd" style="display:none; position: fixed; bottom: 20px; right: 20px; width: 300px; background-color: black; border: 2px solid #ADFF2F; padding: 15px; border-radius: 10px; z-index: 9999; text-align: center;">
+    <!-- Ads -->
+    <div id="popupAd" style="display:none; position: fixed; bottom: 20px; right: 20px; width: 300px; background-color: black; border: 2px solid #ADFF2F; padding: 15px; border-radius: 10px; z-index: 9999; text-align: center;">
        <h4 style="color: #ADFF2F; margin: 5px 0;">🔥 Hot Adult Games</h4>
        <p style="color: white; font-size: 14px;">Play free sex games now</p>
        <a href="https://www.sexgamesbox.com" target="_blank" style="background-color: #ADFF2F; padding: 8px 16px; color: black; border-radius: 6px; text-decoration: none; font-weight: bold;">Play Now</a>
-   </div>
+    </div>
 
-   <script>
-   window.onload = function() {
-       if (localStorage.getItem("ageConfirmed") === "yes") {
-           setTimeout(function() {
-               const ad = document.getElementById("popupAd");
-               ad.style.display = "block";
-
-               setTimeout(function() {
-                   ad.style.display = "none";
-               }, 5000);
-           }, 3000);
-       }
-   };
-   </script>
-
-    <!-- Hover Preview Style -->
-    <style>
-      .hover-preview {
-        width: 100%;
-        max-height: 180px;
-        border-radius: 10px;
-        object-fit: cover;
-        transition: transform 0.2s ease;
-      }
-
-      .hover-preview:hover {
-        transform: scale(1.01);
-      }
-
-      .video-preview {
-        overflow: hidden;
-      }
-    </style>
+    <script>
+    window.onload = function() {
+        if (localStorage.getItem("ageConfirmed") === "yes") {
+            setTimeout(function() {
+                const ad = document.getElementById("popupAd");
+                ad.style.display = "block";
+                setTimeout(function() {
+                    ad.style.display = "none";
+                }, 5000);
+            }, 3000);
+        }
+    };
+    </script>
 
 </body>
 </html>
