@@ -254,6 +254,10 @@ def channel(username):
     videos = Video.query.filter_by(user_id=user.id).order_by(Video.id.desc()).all()
     return render_template('channel.html', user=user, videos=videos, categories=CATEGORIES, countries=COUNTRIES, versions=VERSIONS)
 
+@app.route('/games')
+def games():
+    return "<h1 style='color:white; text-align:center;'>🎮 Games Coming Soon!</h1>"
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
