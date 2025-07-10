@@ -248,6 +248,12 @@ def delete_video(video_id):
     db.session.commit()
     return redirect(url_for('admin'))
 
+@app.route('/channel/<username>')
+def channel(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    videos = Video.query.filter_by(user_id=user.id).order_by(Video.id.desc()).all()
+    return render_template('channel.html', user=user, videos=videos, categories=CATEGORIES, countries=COUNTRIES, versions=VERSIONS)
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
