@@ -1,195 +1,237 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Dashboard - SweetHub</title>
-  <style>
-    body {
-      background-color: #121212;
-      font-family: Arial, sans-serif;
-      color: white;
-      padding: 20px;
-    }
-    h2 {
-      text-align: center;
-      color: #adff2f;
-    }
-    .actions {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .actions a {
-      background: #adff2f;
-      color: #000;
-      padding: 12px 20px;
-      border-radius: 10px;
-      margin: 5px;
-      display: inline-block;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    .actions a:hover {
-      background: #cfff5e;
-    }
-    form {
-      background-color: #1e1e1e;
-      padding: 20px;
-      margin: 20px auto;
-      border-radius: 15px;
-      max-width: 600px;
-    }
-    form h3 {
-      color: #adff2f;
-    }
-    form label {
-      display: block;
-      margin: 10px 0 5px;
-    }
-    form input,
-    form select {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      border: none;
-    }
-    .checkbox-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-    form button {
-      background-color: #adff2f;
-      color: #000;
-      padding: 10px 20px;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    form button:hover {
-      background-color: #cfff5e;
-    }
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-    .video-card {
-      background-color: #1f1f1f;
-      padding: 15px;
-      border-radius: 15px;
-      box-shadow: 0 0 8px #adff2f66;
-    }
-    .video-card video,
-    .video-card img {
-      width: 100%;
-      border-radius: 10px;
-    }
-    .video-info {
-      margin-top: 10px;
-    }
-    .video-info p {
-      margin: 5px 0;
-    }
-    .video-info strong {
-      color: #adff2f;
-    }
-    .delete-button {
-      background-color: #ff4f4f;
-      color: white;
-      padding: 10px;
-      margin-top: 10px;
-      display: block;
-      text-align: center;
-      border-radius: 8px;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    .delete-button:hover {
-      background-color: #ff7777;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetHub Admin Dashboard</title>
+    <style>
+        body {
+            background-color: #000;
+            color: limegreen;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: white;
+        }
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 40px;
+        }
+        .stat-box {
+            background-color: #111;
+            padding: 20px;
+            border: 1px solid limegreen;
+            border-radius: 10px;
+            flex: 1 1 30%;
+            margin: 10px;
+            text-align: center;
+        }
+        form {
+            background-color: #111;
+            padding: 20px;
+            border: 1px solid limegreen;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: limegreen;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            border: 1px solid limegreen;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #222;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background-color: #111;
+            margin: 5px 0;
+            padding: 8px;
+            border-left: 5px solid limegreen;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        a.action-link {
+            color: limegreen;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+        a.delete-link {
+            color: red;
+        }
+        @media (max-width: 768px) {
+            .stat-box {
+                flex: 1 1 100%;
+            }
+            table, th, td {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <h2>Welcome Admin ({{ session.username }})</h2>
+    <h1>SweetHub Admin Dashboard</h1>
 
-  <div class="actions">
-    <a href="#uploadForm">➕ Upload New Video</a>
-    <a href="{{ url_for('logout') }}">🔐 Logout</a>
-  </div>
-
-  <!-- Upload Form -->
-  <form id="uploadForm" action="{{ url_for('upload_video') }}" method="POST" enctype="multipart/form-data">
-    <h3>🚀 Upload New Video</h3>
-
-    <label>Title:</label>
-    <input type="text" name="title" required>
-
-    <label>Category:</label>
-    <select name="category" required>
-      {% for cat in categories %}
-        <option value="{{ cat }}">{{ cat }}</option>
-      {% endfor %}
-    </select>
-
-    <label>Version:</label>
-    <select name="version" required>
-      {% for ver in versions %}
-        <option value="{{ ver }}">{{ ver }}</option>
-      {% endfor %}
-    </select>
-
-    <label>Country:</label>
-    <select name="country" required>
-      {% for country in countries %}
-        <option value="{{ country }}">{{ country }}</option>
-      {% endfor %}
-    </select>
-
-    <label>Tags (comma separated):</label>
-    <input type="text" name="tags">
-
-    <label>Video File (.mp4):</label>
-    <input type="file" name="video" accept="video/mp4" required>
-
-    <label>Thumbnail Image (.jpg, .png):</label>
-    <input type="file" name="thumbnail" accept="image/*" required>
-
-    <div class="checkbox-label">
-      <input type="checkbox" name="is_premium" value="1" id="is_premium">
-      <label for="is_premium">Mark as Premium 💎</label>
+    <div class="stats">
+        <div class="stat-box">
+            <h3>Total Users</h3>
+            <p>{{ total_users }}</p>
+        </div>
+        <div class="stat-box">
+            <h3>Total Videos</h3>
+            <p>{{ total_videos }}</p>
+        </div>
+        <div class="stat-box">
+            <h3>Total Wallet Balance</h3>
+            <p>${{ total_wallet_balance }}</p>
+        </div>
     </div>
 
-    <button type="submit">Upload</button>
-  </form>
+    <div>
+        <h2>Upload New Video</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label>Video Title</label>
+            <input type="text" name="title" required>
 
-  <!-- Video List -->
-  <div class="video-grid">
-    {% for video in videos %}
-      <div class="video-card">
-        {% if video.thumbnail %}
-          <img src="{{ url_for('static', filename='uploads/' ~ video.thumbnail) }}" alt="Thumbnail">
-        {% else %}
-          <video src="{{ url_for('static', filename='uploads/' ~ video.filename) }}" controls></video>
-        {% endif %}
-        <div class="video-info">
-          <p><strong>Title:</strong> {{ video.title }}</p>
-          <p><strong>Category:</strong> {{ video.category }}</p>
-          <p><strong>Country:</strong> {{ video.country }}</p>
-          <p><strong>Version:</strong> {{ video.version }}</p>
-          <p><strong>Views:</strong> {{ video.views }} | <strong>Likes:</strong> {{ video.likes }}</p>
-          {% if video.is_premium %}
-            <p style="color:#adff2f;font-weight:bold;">💎 Premium Video</p>
-          {% endif %}
-        </div>
-        <a class="delete-button" href="{{ url_for('delete_video', video_id=video.id) }}">🗑 Delete Video</a>
-      </div>
-    {% endfor %}
-  </div>
+            <label>Video File</label>
+            <input type="file" name="video" accept="video/*" required>
+
+            <label>Thumbnail Image</label>
+            <input type="file" name="thumbnail" accept="image/*" required>
+
+            <label>Category</label>
+            <select name="category" required>
+                {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Version</label>
+            <select name="version" required>
+                {% for ver in versions %}
+                    <option value="{{ ver }}">{{ ver }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Country</label>
+            <select name="country" required>
+                {% for country in countries %}
+                    <option value="{{ country }}">{{ country }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Premium Access</label>
+            <select name="is_premium" required>
+                <option value="False">Free</option>
+                <option value="True">Premium</option>
+            </select>
+
+            <label>Tags (comma-separated)</label>
+            <input type="text" name="tags" placeholder="e.g., fun, solo, HD">
+
+            <input type="submit" value="Upload Video">
+        </form>
+    </div>
+
+    <div>
+        <h2>Uploaded Videos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Filename</th>
+                    <th>Category</th>
+                    <th>Version</th>
+                    <th>Country</th>
+                    <th>Username</th>
+                    <th>Premium</th>
+                    <th>Thumbnail</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for video in videos %}
+                <tr>
+                    <td>{{ video.title }}</td>
+                    <td>{{ video.filename }}</td>
+                    <td>{{ video.category }}</td>
+                    <td>{{ video.version }}</td>
+                    <td>{{ video.country }}</td>
+                    <td>{{ video.username }}</td>
+                    <td>{{ 'Yes' if video.is_premium else 'No' }}</td>
+                    <td>
+                        <img src="{{ video.thumbnail_url }}" width="80">
+
+                    </td>
+                    <td>
+                        <a href="{{ url_for('edit_video', video_id=video.id) }}" class="action-link">Edit</a> |
+                        <a href="{{ url_for('delete_video', video_id=video.id) }}" class="delete-link" onclick="return confirm('Are you sure you want to delete this video?');">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h2>All Categories</h2>
+        <ul>
+            {% for category in categories %}
+                <li>{{ category }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h2>All Countries</h2>
+        <ul>
+            {% for country in countries %}
+                <li>{{ country }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h2>All Versions</h2>
+        <ul>
+            {% for ver in versions %}
+                <li>{{ ver }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 
 </body>
 </html>

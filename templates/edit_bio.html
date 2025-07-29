@@ -1,13 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Bio</title>
-</head>
-<body style="background:black; color:white; font-family:sans-serif; padding:20px;">
-    <h2>Edit Your Bio</h2>
-    <form method="POST">
-        <textarea name="bio" rows="5" cols="40">{{ bio }}</textarea><br><br>
-        <button type="submit">Save Bio</button>
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Edit Bio | SweetHub{% endblock %}
+
+{% block content %}
+  <h2 style="text-align:center; color:#adff2f;">📝 Edit Your Bio</h2>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul style="color:#ff5050; text-align:center; list-style:none; padding:0;">
+        {% for msg in messages %}
+          <li>{{ msg }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST" style="max-width:600px; margin:auto; background:#1e1e1e; padding:20px; border-radius:12px; box-shadow:0 0 10px #adff2f33;">
+    <label for="bio" style="color:#adff2f;">Your Bio:</label><br>
+    <textarea name="bio" id="bio" rows="6" style="width:100%; padding:10px; border-radius:8px; background:#2a2a2a; color:white; margin-bottom:15px;">{{ bio|e }}</textarea><br>
+    
+    <button type="submit" style="width:100%; background:#adff2f; color:#000; font-weight:bold; padding:12px; border:none; border-radius:8px; cursor:pointer;">💾 Save Bio</button>
+  </form>
+{% endblock %}

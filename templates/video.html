@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Video Details - SweetHub</title>
+  <title>{{ video.title }} - SweetHub</title>
   <style>
     body {
       background-color: #121212;
@@ -10,34 +10,56 @@
       font-family: Arial, sans-serif;
       padding: 30px;
     }
+
     h2 {
       text-align: center;
       color: #adff2f;
+      margin-bottom: 25px;
     }
+
     .video-container {
-      max-width: 800px;
-      margin: 0 auto;
+      max-width: 850px;
+      margin: auto;
       background-color: #1e1e1e;
-      padding: 20px;
+      padding: 25px;
       border-radius: 15px;
-      box-shadow: 0 0 10px #adff2f44;
+      box-shadow: 0 0 12px #adff2f55;
     }
-    video {
+
+    video, iframe {
       width: 100%;
+      height: 480px;
       border-radius: 10px;
+      margin-bottom: 15px;
+      border: none;
     }
+
     .details {
       margin-top: 15px;
+      font-size: 15px;
     }
+
     .details p {
       margin: 8px 0;
     }
+
     .details strong {
       color: #adff2f;
     }
+
+    .premium-badge {
+      color: #ffd700;
+      font-weight: bold;
+      background-color: #333;
+      padding: 6px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
     .back-button {
       display: inline-block;
-      margin-top: 20px;
+      margin-top: 25px;
       padding: 10px 18px;
       background-color: #adff2f;
       color: black;
@@ -45,6 +67,7 @@
       border-radius: 8px;
       font-weight: bold;
     }
+
     .back-button:hover {
       background-color: #cfff5e;
     }
@@ -52,22 +75,31 @@
 </head>
 <body>
 
-  <h2>Video Details</h2>
+  <h2>🎬 {{ video.title }}</h2>
 
   <div class="video-container">
-    <video controls>
-      <source src="{{ url_for('static', filename='uploads/' + video.filename) }}" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+
+    {% if video.is_premium %}
+      <div class="premium-badge">💎 Premium Content</div>
+    {% endif %}
+
+    {% if video.embed_code %}
+      {{ video.embed_code | safe }}
+    {% else %}
+      <video controls poster="{{ url_for('uploaded_file', filename=video.thumbnail) }}">
+        <source src="{{ url_for('uploaded_file', filename=video.filename) }}" type="video/mp4">
+        Your browser does not support this video format.
+      </video>
+    {% endif %}
 
     <div class="details">
-      <p><strong>Title:</strong> {{ video.title }}</p>
-      <p><strong>Category:</strong> {{ video.category }}</p>
-      <p><strong>Country:</strong> {{ video.country }}</p>
-      <p><strong>Version:</strong> {{ video.version }}</p>
-      <p><strong>Views:</strong> {{ video.views }}</p>
-      <p><strong>Likes:</strong> {{ video.likes }}</p>
-      <p><strong>Tags:</strong> {{ video.tags }}</p>
+      <p><strong>📛 Title:</strong> {{ video.title }}</p>
+      <p><strong>🎯 Category:</strong> {{ video.category }}</p>
+      <p><strong>🌍 Country:</strong> {{ video.country }}</p>
+      <p><strong>🧬 Version:</strong> {{ video.version }}</p>
+      <p><strong>👁 Views:</strong> {{ video.views }}</p>
+      <p><strong>❤️ Likes:</strong> {{ video.likes }}</p>
+      <p><strong>🏷 Tags:</strong> {{ video.tags }}</p>
     </div>
 
     <a href="{{ url_for('home') }}" class="back-button">← Back to Home</a>

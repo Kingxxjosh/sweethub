@@ -1,0 +1,9 @@
+.env 
+*.db 
+*.mp4 
+*.exe 
+*.png 
+*.jpg 
+instance/ 
+venv/ 
+__pycache__/ 

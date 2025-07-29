@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ video.title }} - Watch</title>
+    <style>
+        body {
+            background-color: black;
+            color: lemonchiffon;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        video {
+            width: 100%;
+            max-width: 720px;
+            border: 3px solid lemonchiffon;
+            border-radius: 12px;
+        }
+        .meta {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .comments {
+            margin-top: 30px;
+        }
+        .comments p {
+            background-color: #111;
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>{{ video.title }}</h2>
+
+    <video controls poster="{{ video.thumbnail_url }}">
+        <source src="{{ video.video_url }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+<form method="POST" action="{{ url_for('like_video', video_id=video.id) }}">
+    <button type="submit">❤️ Like</button>
+</form>
+
+    <div class="meta">
+        <p><strong>Category:</strong> {{ video.category }} | 
+           <strong>Version:</strong> {{ video.version }} | 
+           <strong>Country:</strong> {{ video.country }}</p>
+
+        <p><strong>Views:</strong> {{ video.views }} | 
+           <strong>Likes:</strong> {{ video.likes }} | 
+           <strong>Comments:</strong> {{ video.comments|length }}</p>
+    </div>
+
+    <div class="comments">
+        <h3>💬 Comments:</h3>
+        {% for comment in video.comments %}
+            <p><strong>{{ comment.username }}</strong>: {{ comment.text }}</p>
+        {% else %}
+            <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

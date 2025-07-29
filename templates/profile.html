@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ username }}'s Profile - SweetHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+    .profile-header {
+      background-color: #1e1e1e;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #adff2f;
+    }
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #adff2f;
+      margin-bottom: 10px;
+    }
+    .profile-info p {
+      margin: 5px 0;
+    }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .video-card {
+      background-color: #1f1f1f;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #adff2f33;
+    }
+    .video-card video,
+    .video-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .video-info {
+      margin-top: 10px;
+    }
+    .video-info p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    .back-button {
+      display: block;
+      text-align: center;
+      margin: 20px auto;
+      background: #adff2f;
+      color: black;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      width: fit-content;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-header">
+    <img src="{{ url_for('static', filename='profile_pics/' + user.profile_pic if user.profile_pic else 'default.png') }}" alt="Profile Picture" class="profile-pic">
+    <div class="profile-info">
+      <h2>{{ user.username }}</h2>
+      <p>Gender: {{ user.gender or 'N/A' }}</p>
+      <p>Age: {{ user.age or 'N/A' }}</p>
+      <p>Country: {{ user.country or 'Unknown' }}</p>
+      <p>SweetCoins: {{ user.sweetcoins or 0 }}</p>
+      <p>Bio: {{ user.bio or 'No bio yet.' }}</p>
+    </div>
+  </div>
+
+  <a href="{{ url_for('home') }}" class="back-button">&larr; Back to Home</a>
+
+  <div class="video-grid">
+    {% for video in user_videos %}
+      <div class="video-card">
+        {% if video.thumbnail %}
+          <img src="{{ url_for('static', filename='uploads/' ~ video.thumbnail) }}" alt="Thumbnail">
+        {% else %}
+          <video src="{{ url_for('static', filename='uploads/' ~ video.filename) }}" controls></video>
+        {% endif %}
+        <div class="video-info">
+          <p><strong>{{ video.title }}</strong></p>
+          <p>Category: {{ video.category }}</p>
+          <p>Views: {{ video.views }} | Likes: {{ video.likes }}</p>
+          {% if video.is_premium %}<p style="color:#adff2f;font-weight:bold;">💎 Premium</p>{% endif %}
+          <a href="{{ url_for('watch_video', video_id=video.id) }}" style="color:#adff2f;text-decoration:underline;font-size:13px;">Watch</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</body>
+</html>

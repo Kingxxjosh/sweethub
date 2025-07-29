@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}SweetHub - Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 style="text-align: center; color: #adff2f;">🔥 Latest Videos</h2>
+    <p style="text-align: center; color: #ccc;">🎥 {{ videos|length }} videos available</p>
+
+    <div class="video-grid">
+        {% for video in videos %}
+        <div class="video-card">
+            <a href="{{ url_for('watch_video', video_id=video.id) }}">
+                <img src="{{ url_for('static', filename='uploads/' + (video.thumbnail_url if video.thumbnail_url else 'default_thumbnail.jpg')) }}" alt="{{ video.title }}" class="thumbnail">
+
+            </a>
+
+            <div class="video-info">
+                <p class="video-title">
+                    <a href="{{ url_for('watch_video', video_id=video.id) }}">{{ video.title }}</a>
+                </p>
+
+                <p class="video-meta">
+                    📁 {{ video.category or 'Unknown' }} |
+                    🌍 {{ video.country or 'N/A' }} |
+                    🆚 {{ video.version or 'N/A' }}
+                </p>
+
+                <div class="video-stats">
+                    <span>👁️ {{ video.views or 0 }} views</span>
+                    <span>❤️ {{ video.likes or 0 }} likes</span>
+                    <span>💬 {{ video.comments|length }} comments</span>
+                </div>
+
+                {% if video.is_premium %}
+                    <span class="premium-badge">💎 Premium</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.container {
+    padding: 20px;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.video-card {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.video-card:hover {
+    transform: scale(1.02);
+}
+
+.thumbnail {
+    width: 100%;
+    max-width: 350px;
+    height: 200px;
+    object-fit: cover;
+    background: #000;
+}
+
+.video-info {
+    padding: 10px;
+    color: #fff;
+}
+
+.video-title a {
+    font-size: 16px;
+    font-weight: bold;
+    color: #adff2f;
+    text-decoration: none;
+}
+
+.video-title a:hover {
+    text-decoration: underline;
+}
+
+.video-meta {
+    font-size: 13px;
+    color: #ccc;
+    margin: 3px 0;
+}
+
+.video-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+    margin: 5px 0;
+    color: #adff2f;
+}
+
+.premium-badge {
+    background: #ffcc00;
+    color: #000;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 12px;
+}
+</style>
+{% endblock %}

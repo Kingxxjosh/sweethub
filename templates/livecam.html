@@ -1,7 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Cams - SweetHub</title>
     <style>
         body {
@@ -12,10 +14,29 @@
             padding: 0;
         }
 
+        nav {
+            background-color: #111;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: #adff2f;
+            text-decoration: none;
+            margin: 0 12px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
         h2 {
             color: #adff2f;
             text-align: center;
-            margin-top: 20px;
+            margin: 20px 0;
+            font-size: 26px;
         }
 
         .cam-grid {
@@ -27,10 +48,10 @@
 
         .cam-card {
             background-color: #111;
-            border: 2px solid #333;
+            border: 1px solid #333;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 0 8px rgba(0,0,0,0.5);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
             text-align: center;
         }
 
@@ -41,46 +62,66 @@
         }
 
         .cam-card p {
-            color: #fff;
-            font-size: 14px;
             margin: 10px;
+            font-size: 15px;
+            color: #ccc;
         }
 
         .cam-card a {
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            padding: 8px 18px;
             background-color: #adff2f;
             color: #000;
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+            border-radius: 5px;
             font-weight: bold;
         }
 
         .cam-card a:hover {
-            background-color: #caff4a;
+            background-color: #dfff60;
+        }
+
+        @media (max-width: 600px) {
+            nav a {
+                display: block;
+                margin: 8px 0;
+            }
+
+            .cam-card iframe {
+                height: 160px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <nav>
+        <a href="home.html">🏠 Home</a>
+        <a href="livecam.html">🎥 Live Cams</a>
+        <a href="premium.html">💎 Premium</a>
+        <a href="chatroom.html">💬 Chatroom</a>
+    </nav>
+
     <h2>🔴 Live Adult Cams</h2>
 
     <div class="cam-grid">
         <div class="cam-card">
-            <iframe src="https://www.livehdcams.com/embed/?id=hot&cat=1" allowfullscreen></iframe>
+            <iframe src="https://www.livehdcams.com/embed/?id=hot&cat=1" allowfullscreen loading="lazy" title="LiveHDCams"></iframe>
             <p>LiveHDCams - Hot Girls</p>
-            <a href="https://www.livehdcams.com" target="_blank">Watch Live</a>
+            <a href="https://www.livehdcams.com" target="_blank" rel="noopener noreferrer">Watch Live</a>
         </div>
+
         <div class="cam-card">
-            <iframe src="https://chaturbate.com/in/?track=default&tour=hr8m&campaign=livedemo" allowfullscreen></iframe>
+            <iframe src="https://chaturbate.com/in/?track=default&tour=hr8m&campaign=livedemo" allowfullscreen loading="lazy" title="Chaturbate"></iframe>
             <p>Chaturbate Cams</p>
-            <a href="https://chaturbate.com" target="_blank">Watch Chaturbate</a>
+            <a href="https://chaturbate.com" target="_blank" rel="noopener noreferrer">Watch Chaturbate</a>
         </div>
+
         <div class="cam-card">
-            <iframe src="https://stripchat.com/iframe/popular-room" allowfullscreen></iframe>
+            <iframe src="https://stripchat.com/iframe/popular-room" allowfullscreen loading="lazy" title="Stripchat"></iframe>
             <p>Stripchat Girls</p>
-            <a href="https://stripchat.com" target="_blank">Join Stripchat</a>
+            <a href="https://stripchat.com" target="_blank" rel="noopener noreferrer">Join Stripchat</a>
         </div>
     </div>
 

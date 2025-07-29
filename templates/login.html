@@ -1,91 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Login - SweetHub</title>
-  <style>
-    body {
-      background-color: #121212;
-      color: white;
-      font-family: Arial, sans-serif;
-      padding: 40px;
-    }
-    h2 {
-      text-align: center;
-      color: #adff2f;
-    }
-    form {
-      max-width: 400px;
-      margin: auto;
-      background: #1f1f1f;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px #adff2f44;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      background: #2a2a2a;
-      border: 1px solid #333;
-      border-radius: 8px;
-      color: white;
-    }
-    button {
-      width: 100%;
-      margin-top: 20px;
-      padding: 12px;
-      background-color: #adff2f;
-      color: black;
-      border: none;
-      font-weight: bold;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #cfff4d;
-    }
-    a {
-      color: #adff2f;
-      text-align: center;
-      display: block;
-      margin-top: 10px;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .error {
-      color: red;
-      text-align: center;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
+{% extends "base.html" %}
 
-  <h2>Login to SweetHub</h2>
+{% block title %}Login - SweetHub{% endblock %}
 
-  <form method="POST">
-    {% if error %}
-      <div class="error">{{ error }}</div>
-    {% endif %}
-    
-    <label for="username">Username</label>
-    <input type="text" name="username" id="username" required>
+{% block content %}
+<div class="form-container" style="max-width: 400px; margin: auto; padding: 20px; background: #1e1e1e; border-radius: 10px; color: white;">
+  <h2 style="text-align:center; color:#adff2f;">🔐 Login to SweetHub</h2>
 
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
+  {% if error %}
+    <div class="error" style="color: red; text-align: center;">{{ error }}</div>
+  {% endif %}
 
-    <button type="submit">Login</button>
-    <a href="{{ url_for('register') }}">Don't have an account? Register</a>
+  <form method="POST" action="{{ url_for('login') }}">
+    <label for="username" style="color:#adff2f;">Username</label>
+    <input type="text" name="username" id="username" placeholder="Enter username" required
+           style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:none; background:#2a2a2a; color:white;">
+
+    <label for="password" style="color:#adff2f;">Password</label>
+    <input type="password" name="password" id="password" placeholder="Enter password" required
+           style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:none; background:#2a2a2a; color:white;">
+
+    <button type="submit" style="width:100%; background:#adff2f; color:#000; font-weight:bold; padding:12px; border:none; border-radius:8px; cursor:pointer;">
+      🔓 Login
+    </button>
   </form>
 
-</body>
-</html>
+  <div class="login-link" style="text-align:center; margin-top: 15px;">
+    <p>Don't have an account? <a href="{{ url_for('register') }}" style="color:#adff2f;">Register</a></p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Versions</title>
+</head>
+<body>
+    <h2>All Video Versions (Admin)</h2>
+    <ul>
+        {% for v in versions %}
+            <li>
+                <a href="{{ url_for('videos_by_version', version_name=v) }}">
+                    {{ v }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

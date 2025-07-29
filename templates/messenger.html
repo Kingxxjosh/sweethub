@@ -1,159 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>SweetHub Messenger</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: url('https://i.imgur.com/JLhQBkx.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #0066cc;
-    }
-    .container {
-      display: flex;
-      height: 100vh;
-      backdrop-filter: blur(4px);
-    }
-    .sidebar {
-      width: 300px;
-      background-color: rgba(255,255,255,0.9);
-      border-right: 2px solid #cce;
-      overflow-y: auto;
-      padding: 10px;
-    }
-    .user {
-      background: #fff;
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: 0.2s;
-    }
-    .user:hover {
-      background: #f0f8ff;
-    }
-    .user .avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      float: left;
-      margin-right: 10px;
-    }
-    .user .info {
-      overflow: hidden;
-    }
-    .user .info strong {
-      display: block;
-      font-size: 16px;
-      color: #0066cc;
-    }
-    .user .info small {
-      display: block;
-      font-size: 12px;
-      color: #666;
-    }
-    .user .actions {
-      margin-top: 5px;
-    }
-    .user .actions button {
-      margin-right: 5px;
-      padding: 4px 8px;
-      font-size: 12px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .chat {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      background-color: rgba(255,255,255,0.95);
-    }
-    .chat-header {
-      padding: 15px;
-      background: #e0f0ff;
-      font-size: 18px;
-      font-weight: bold;
-      border-bottom: 2px solid #bbe;
-    }
-    .toolbar {
-      padding: 10px;
-      background: #f0faff;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .toolbar button {
-      padding: 6px 12px;
-      background: #0066cc;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .chat-messages {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-    }
-    .chat-message {
-      background: #e6f2ff;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-    .chat-input {
-      display: flex;
-      padding: 10px;
-      border-top: 2px solid #cce;
-      background-color: #f9f9f9;
-    }
-    .chat-input input[type="text"] {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ccd;
-      border-radius: 6px;
-    }
-    .chat-input input[type="file"] {
-      display: none;
-    }
-    .chat-input button, .chat-input label {
-      background: #0066cc;
-      color: white;
-      padding: 10px;
-      margin-left: 10px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-<div class="container">
-  <div class="sidebar" id="userList"></div>
-  <div class="chat">
-    <div class="chat-header" id="chatWith">SweetHub Group</div>
-    <div class="toolbar">
-      <button onclick="joinRoom('group')">🔵 Global Room</button>
-      <button onclick="joinRoom('adult')">🔞 Adult Room</button>
+{% extends "base.html" %}
+
+{% block title %}SweetHub Messenger{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<style>
+  .chat-container {
+    display: flex;
+    height: 80vh;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 10px #adff2f55;
+  }
+  .chat-sidebar {
+    width: 280px;
+    background-color: #222;
+    padding: 10px;
+    overflow-y: auto;
+    border-right: 2px solid #adff2f44;
+  }
+  .chat-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #181818;
+  }
+  .chat-header {
+    padding: 12px 20px;
+    background-color: #111;
+    color: #adff2f;
+    font-size: 18px;
+    border-bottom: 1px solid #adff2f33;
+  }
+  .chat-toolbar {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    background-color: #141414;
+    border-bottom: 1px solid #333;
+  }
+  .chat-toolbar button {
+    background: #adff2f;
+    color: black;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    color: white;
+  }
+  .chat-message {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    max-width: 75%;
+  }
+  .chat-input {
+    display: flex;
+    padding: 10px;
+    background-color: #111;
+    border-top: 1px solid #333;
+  }
+  .chat-input input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: #222;
+    color: white;
+  }
+  .chat-input button, .chat-input label {
+    background: #adff2f;
+    color: black;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+</style>
+
+<div class="chat-container">
+  <div class="chat-sidebar" id="userList"></div>
+  <div class="chat-main">
+    <div class="chat-header" id="chatWith">SweetHub Global Chat</div>
+    <div class="chat-toolbar">
+      <button onclick="joinRoom('group')">🌍 Global</button>
+      <button onclick="joinRoom('adult')">🔞 Adult</button>
       <button onclick="openEmojiPicker()">😊 Emojis</button>
     </div>
     <div class="chat-messages" id="messages"></div>
     <div class="chat-input">
       <input type="text" id="messageInput" placeholder="Type your message...">
       <label for="fileInput"><i class="fas fa-paperclip"></i></label>
-      <input type="file" id="fileInput" onchange="sendFile()">
+      <input type="file" id="fileInput" onchange="sendFile()" hidden>
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
 </div>
+
 <script>
   const socket = io();
   const username = '{{ session.get("username", "Guest") }}';
@@ -164,19 +117,19 @@
   const chatWith = document.getElementById('chatWith');
   let currentRoom = 'group';
 
-  function joinRoom(roomName) {
-    socket.emit("join", { room: roomName });
-    currentRoom = roomName;
+  function joinRoom(room) {
+    socket.emit("join", { room });
+    currentRoom = room;
     messages.innerHTML = '';
-    chatWith.innerText = roomName === 'group' ? "SweetHub Group" : `${roomName} Room`;
+    chatWith.innerText = room === 'group' ? "SweetHub Global Chat" : `${room} Room`;
   }
 
   function sendMessage() {
     const msg = messageInput.value.trim();
     if (msg) {
       socket.emit("send_message", {
-        content: msg,
         sender: username,
+        content: msg,
         room: currentRoom,
         type: 'text'
       });
@@ -188,27 +141,30 @@
     const file = fileInput.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = e => {
       socket.emit("send_message", {
-        content: e.target.result,
         sender: username,
-        room: currentRoom,
+        content: e.target.result,
         filename: file.name,
+        room: currentRoom,
         type: 'file'
       });
     };
     reader.readAsDataURL(file);
   }
 
+  function openEmojiPicker() {
+    alert("Emoji picker coming soon!");
+  }
+
   socket.on("receive_message", data => {
     if (data.room === currentRoom) {
-      const div = document.createElement("div");
-      div.className = "chat-message";
-      if (data.type === 'file') {
-        div.innerHTML = `<b>${data.sender}</b>: <a href="${data.content}" target="_blank">${data.filename}</a>`;
-      } else {
-        div.innerHTML = `<b>${data.sender}</b>: ${data.content}`;
-      }
+      const div = document.createElement('div');
+      div.className = 'chat-message';
+      div.innerHTML = `<strong>${data.sender}:</strong> ` +
+        (data.type === 'file'
+          ? `<a href="${data.content}" target="_blank">${data.filename}</a>`
+          : data.content);
       messages.appendChild(div);
       messages.scrollTop = messages.scrollHeight;
     }
@@ -217,21 +173,10 @@
   socket.on("user_list", users => {
     userList.innerHTML = '';
     users.forEach(user => {
-      const div = document.createElement("div");
-      div.className = "user";
-      div.innerHTML = `
-        <img src="/static/profile_pics/${user.profile_pic || 'default.png'}" class="avatar">
-        <div class="info">
-          <strong>${user.username}</strong>
-          <small>${user.gender || 'Unknown'} | ${user.age || 'N/A'} yrs</small>
-          <small>${user.country || 'N/A'} ${user.flag || ''}</small>
-          <small>SweetCoins: ${user.sweetcoins || 0}</small>
-        </div>
-        <div class="actions">
-          <button onclick="joinRoom('${user.username}')">Chat</button>
-          <button>Follow</button>
-        </div>
-      `;
+      const div = document.createElement('div');
+      div.style.padding = '10px';
+      div.style.borderBottom = '1px solid #444';
+      div.innerHTML = `<strong>${user.username}</strong><br><small>${user.country || ''}</small>`;
       userList.appendChild(div);
     });
   });
@@ -239,5 +184,4 @@
   joinRoom('group');
   socket.emit("request_users");
 </script>
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Buy SweetCoins</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #121212;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h2 {
+      color: #00ff99;
+    }
+
+    form {
+      background: #1e1e1e;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,255,153,0.4);
+      width: 300px;
+      text-align: center;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: none;
+      background: #2e2e2e;
+      color: #00ff99;
+      font-size: 16px;
+    }
+
+    button {
+      background: #00ff99;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #00cc7a;
+    }
+  </style>
+</head>
+<body>
+  <h2>💰 Buy SweetCoins</h2>
+  <form method="POST" action="/initiate_payment">
+    <select name="coins" required>
+      <option value="1">1 SweetCoin – 💵 $1.99</option>
+      <option value="5">5 SweetCoins – 💰 $9.99</option>
+      <option value="10">10 SweetCoins – 🏦 $18.99</option>
+    </select>
+    <button type="submit">🛒 Buy Now</button>
+  </form>
+</body>
+</html>

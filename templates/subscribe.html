@@ -1,59 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Go Premium - SweetHub</title>
-    <script src="https://js.paystack.co/v1/inline.js"></script>
-    <style>
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding-top: 100px;
-        }
-        .box {
-            background-color: #111;
-            padding: 30px;
-            border-radius: 15px;
-            display: inline-block;
-        }
-        button {
-            background-color: #adff2f;
-            color: black;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Subscribe - SweetHub</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .subscribe-box {
+      background-color: #1e1e1e;
+      padding: 40px;
+      border-radius: 15px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 15px #adff2f66;
+    }
+
+    h2 {
+      color: #adff2f;
+    }
+
+    p {
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+
+    .features {
+      text-align: left;
+      margin: 20px auto;
+      max-width: 400px;
+    }
+
+    .features li {
+      margin-bottom: 10px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background-color: #adff2f;
+      border: none;
+      border-radius: 8px;
+      color: black;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #dfff6f;
+    }
+  </style>
 </head>
 <body>
-    <div class="box">
-        <h1>💎 Go Premium</h1>
-        <p>Unlimited access to exclusive content</p>
-        <p><strong>₵49.99/month (GHS)</strong></p>
-        <button onclick="payWithPaystack()">Subscribe Now</button>
-    </div>
 
-    <script>
-        function payWithPaystack() {
-            var handler = PaystackPop.setup({
-                key: '{{ paystack_public_key }}',  // from Flask
-                email: '{{ user_email }}',
-                amount: 4999 * 100, // GHS 49.99 in kobo/pesewas
-                currency: "GHS",
-                callback: function(response) {
-                    // Send reference to Flask to verify
-                    window.location.href = "/verify-payment/" + response.reference;
-                },
-                onClose: function() {
-                    alert('Transaction was cancelled.');
-                }
-            });
-            handler.openIframe();
-        }
-    </script>
+  <div class="subscribe-box">
+    <h2>Upgrade to 💎 Premium</h2>
+    <p>Unlock exclusive features and premium content:</p>
+
+    <ul class="features">
+      <li>✔️ Access Premium Videos</li>
+      <li>✔️ Remove Ads</li>
+      <li>✔️ Priority Support</li>
+      <li>✔️ Earn 2x SweetCoins</li>
+      <li>✔️ VIP Badge on Profile</li>
+    </ul>
+
+    <form method="POST" action="#">
+      <!-- You can connect Paystack, Stripe, or any payment logic here -->
+      <button onclick="alert('This is a placeholder. Connect payment in future.')">Subscribe Now - GHS 30/mo</button>
+    </form>
+
+    <br>
+    <a href="{{ url_for('home') }}" style="color: #adff2f; display: inline-block; margin-top: 20px;">← Back to Home</a>
+  </div>
+
 </body>
 </html>

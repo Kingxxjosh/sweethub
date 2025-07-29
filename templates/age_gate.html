@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔞 SweetHub Age Verification</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        button {
+            background-color: #0f0;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #0c0;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <h1>🔞 You must be 18 or older to enter <strong>SweetHub</strong></h1>
+    <p>By clicking below, you confirm you are at least 18 years old.</p>
+
+    <form method="POST">
+        <div class="buttons">
+            <button type="submit" name="choice" value="straight">I am 18+ - Straight</button>
+            <button type="submit" name="choice" value="gay">I am 18+ - Gay</button>
+            <button type="submit" name="choice" value="other">I am 18+ - Other</button>
+        </div>
+    </form>
+</body>
+</html>

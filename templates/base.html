@@ -1,197 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}SweetHub{% endblock %}</title>
-    <style>
-        body {
-            background-color: #000;
-            color: #eee;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}SweetHub{% endblock %}</title>
+  <style>
+  :root {
+    --main-color: #adff2f;
+    --accent-color: #00ff99;
+    --background: #000;
+    --nav-bg: #111;
+    --nav-link-bg: #222;
+  }
 
-        .topbar {
-            background-color: #111;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
+  * {
+    box-sizing: border-box;
+  }
 
-        .logo {
-            color: #adff2f;
-            font-size: 24px;
-            font-weight: bold;
-        }
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background);
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+  }
 
-        .search-bar {
-            flex: 1;
-            margin: 10px;
-        }
+  header {
+    background: var(--nav-bg);
+    padding: 20px;
+    text-align: center;
+  }
 
-        .search-bar input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 4px;
-            border: none;
-            font-size: 16px;
-        }
+  header h1 {
+    margin: 0;
+    color: var(--main-color);
+    font-size: 6vw;
+  }
 
-        .auth-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
+  nav {
+    background: var(--nav-link-bg);
+    padding: 10px;
+    text-align: center;
+    flex-wrap: wrap;
+  }
 
-        .auth-links a {
-            color: #adff2f;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-        }
+  nav a {
+    color: var(--main-color);
+    margin: 5px 8px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+  }
 
-        .auth-links a:hover {
-            text-decoration: underline;
-        }
+  nav a:hover {
+    text-decoration: underline;
+  }
 
-        .dropdown {
-            position: relative;
-        }
+  .categories {
+    margin-top: 10px;
+    padding: 10px;
+    text-align: center;
+    background: var(--nav-bg);
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
-        .dropdown a {
-            color: #adff2f;
-            text-decoration: none;
-            padding: 8px 12px;
-            font-weight: bold;
-        }
+  .categories a {
+    color: var(--accent-color);
+    margin: 4px 6px;
+    font-size: 13px;
+    text-decoration: none;
+    background: #222;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-block;
+  }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #111;
-            border: 1px solid #333;
-            border-radius: 8px;
-            min-width: 240px;
-            z-index: 999;
-            top: 100%;
-            right: 0;
-        }
+  .categories a:hover {
+    background: #333;
+    color: #fff;
+  }
 
-        .dropdown-content a {
-            color: #fff;
-            padding: 8px 12px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+  .container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 10px;
+  }
 
-        .dropdown-content a img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 6px;
-            border: 1px solid #333;
-        }
+  footer {
+    background: var(--nav-bg);
+    color: #888;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+    font-size: 14px;
+  }
 
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
+  .flash {
+    background: #333;
+    padding: 10px;
+    margin: 10px auto;
+    color: #fff;
+    border-left: 5px solid var(--main-color);
+    width: 90%;
+    text-align: center;
+    border-radius: 4px;
+  }
 
-        @media screen and (max-width: 768px) {
-            .topbar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+  @media (max-width: 768px) {
+    header h1 {
+      font-size: 7vw;
+    }
 
-            .search-bar {
-                width: 100%;
-            }
+    nav {
+      font-size: 14px;
+    }
 
-            .auth-links {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-        }
-    </style>
-    {% block extra_head %}{% endblock %}
+    .categories a {
+      font-size: 12px;
+    }
+
+    .container {
+      padding: 5px;
+    }
+
+    .flash {
+      width: 95%;
+    }
+  }
+</style>
+
 </head>
 <body>
 
-<div id="agePopup" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000000e6;display:flex;justify-content:center;align-items:center;z-index:9999;">
-    <div style="background:#111;padding:30px;border-radius:10px;text-align:center;max-width:400px;">
-        <h2 style="color:#adff2f;">🔞 Age Verification</h2>
-        <p>You must be 18 years or older to enter SweetHub.</p>
-        <button onclick="acceptAge()" style="margin-top:20px;padding:10px 20px;font-size:16px;background:#adff2f;border:none;border-radius:5px;">I’m 18+</button>
+  <header>
+    <h1>SweetHub 🍬</h1>
+  </header>
+
+  <nav>
+    <a href="{{ url_for('home') }}">🏠 Home</a>
+    <a href="{{ url_for('register_model') }}">Become a Model</a>
+     <a href="{{ url_for('messenger') }}" class="btn" style="color:#adff2f;">💬 SweeXenga</a>
+    {% if session.get('username') %}
+      <a href="{{ url_for('upload_video') }}">📤 Upload</a>
+      <a href="{{ url_for('channel', username=session.get('username')) }}">👤 My Channel</a>
+      {% if session.get('is_admin') %}
+        <a href="{{ url_for('admin') }}">🛠 Admin</a>
+      {% endif %}
+      <a href="{{ url_for('logout') }}">🚪 Logout</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">🔐 Login</a>
+      <a href="{{ url_for('register') }}">📝 Register</a>
+    {% endif %}
+  </nav>
+
+  {% if CATEGORIES %}
+    <div class="categories">
+      {% for cat in CATEGORIES %}
+        <a href="{{ url_for('home') }}?category={{ cat }}">{{ cat }}</a>
+      {% endfor %}
     </div>
-</div>
+  {% endif %}
 
-<script>
-    function acceptAge() {
-        localStorage.setItem("ageConfirmed", "yes");
-        document.getElementById("agePopup").style.display = "none";
-    }
-    window.onload = function () {
-        if (localStorage.getItem("ageConfirmed") === "yes") {
-            document.getElementById("agePopup").style.display = "none";
-        }
-    }
-</script>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="flash">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
 
-<div class="topbar">
-    <div class="logo">SweetHub</div>
-    <form class="search-bar" action="{{ url_for('search') }}" method="GET">
-        <input type="text" name="q" placeholder="Search videos by title or tags..." required>
-    </form>
-    <div class="auth-links">
-        {% if session.get('username') %}
-            <a href="{{ url_for('channel', username=session['username']) }}">📺 My Channel</a>
-            <a href="{{ url_for('messenger') }}">💬 Messenger</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
-            {% if session.get('is_admin') %}
-                <a href="{{ url_for('admin') }}">Admin</a>
-                <a href="{{ url_for('upload_video') }}">Upload</a>
-            {% endif %}
-        {% else %}
-            <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('register_user') }}">Register</a>
-            <a href="{{ url_for('register_model') }}">Become a Model</a>
-        {% endif %}
-        <a href="{{ url_for('games') }}">🎮 Games</a>
-        <div class="dropdown">
-            <a href="#">📹 Live Cams (Coming Soon)</a>
-            <div class="dropdown-content">
-                <a href="https://chaturbate.com/in/?tour=hr8m&campaign=cam1" target="_blank">
-                    <img src="https://roomimg.stream.highwebmedia.com/ri/goddessjasmine.jpg" alt="Jasmine"> Goddess Jasmine
-                </a>
-                <a href="https://stripchat.com" target="_blank">
-                    <img src="https://static.stripcdn.com/room_images/rooms/600/00/21/71/1/preview.jpg" alt="Candy"> MILF Candy
-                </a>
-                <a href="https://www.livehdcams.com" target="_blank">
-                    <img src="https://www.livehdcams.com/thumbs/hotcam1.jpg" alt="Sasha"> Sasha – LiveHD
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
 
-{% block content %}{% endblock %}
+  <footer>
+    &copy; {{ current_year }} SweetHub. All rights reserved.
+  </footer>
 
-<script type="text/javascript" src="https://fl-cdn2.contentabc.com/delivery/idsync/idsync.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        if (window.idsync && typeof window.idsync.config === 'function') {
-            try {
-                window.idsync.config(36494).fp_get().sync();
-            } catch {}
-        }
-    });
-</script>
 </body>
 </html>

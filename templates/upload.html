@@ -1,118 +1,52 @@
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Upload Video - SweetHub</title>
-  <style>
-    body {
-      background-color: #121212;
-      color: white;
-      font-family: Arial, sans-serif;
-      padding: 30px;
-    }
-    h2 {
-      text-align: center;
-      color: #adff2f;
-    }
-    form {
-      max-width: 600px;
-      margin: auto;
-      background-color: #1e1e1e;
-      padding: 20px;
-      border-radius: 15px;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      color: #ccc;
-    }
-    input[type="text"],
-    textarea,
-    select,
-    input[type="file"] {
-      width: 100%;
-      padding: 10px;
-      background-color: #2a2a2a;
-      color: white;
-      border: 1px solid #333;
-      border-radius: 8px;
-      margin-top: 5px;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 20px;
-      background-color: #adff2f;
-      color: black;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #cfff5e;
-    }
-    .premium-box {
-      margin-top: 20px;
-    }
-    .premium-box label {
-      display: inline-block;
-      color: #adff2f;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
+{% block title %}Upload Video | SweetHub{% endblock %}
 
-  <h2>Upload New Video</h2>
+{% block content %}
+<h2 style="text-align:center; color:#adff2f;">🚀 Upload New Video</h2>
 
-<form method="POST" action="{{ url_for('upload_video') }}" enctype="multipart/form-data">
-  <label>Title</label>
-  <input type="text" name="title" required>
+<form action="{{ url_for('upload_video') }}" method="POST" enctype="multipart/form-data" style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px; background:#111; padding:20px; border-radius:10px; max-width:1200px; margin:auto;">
 
-  <label>Category</label>
-  <select name="category" required>
+  <input type="text" name="title" placeholder="Title" required style="flex:1; min-width:200px; padding:10px; border-radius:8px; border:none; background:#222; color:#fff;">
+
+  <select name="category" required style="flex:1; min-width:150px; padding:10px; border-radius:8px; background:#222; color:#fff;">
+    <option disabled selected>Category</option>
     {% for cat in categories %}
       <option value="{{ cat }}">{{ cat }}</option>
     {% endfor %}
   </select>
 
-  <label>Version</label>
-  <select name="version" required>
+  <select name="version" required style="flex:1; min-width:100px; padding:10px; border-radius:8px; background:#222; color:#fff;">
+    <option disabled selected>Version</option>
     {% for ver in versions %}
       <option value="{{ ver }}">{{ ver }}</option>
     {% endfor %}
   </select>
 
-  <label>Country</label>
-  <select name="country" required>
-    {% for c in countries %}
-      <option value="{{ c }}">{{ c }}</option>
+  <select name="country" required style="flex:1; min-width:150px; padding:10px; border-radius:8px; background:#222; color:#fff;">
+    <option disabled selected>Country</option>
+    {% for country in countries %}
+      <option value="{{ country }}">{{ country }}</option>
     {% endfor %}
   </select>
 
-  <label>Tags (comma-separated)</label>
-  <input type="text" name="tags" placeholder="e.g. teen, amateur, hd">
+  <input type="text" name="tags" placeholder="Tags e.g. sweet,hub,video" style="flex:1 1 250px; padding:10px; border-radius:8px; background:#222; color:white;">
 
-  <label>Thumbnail Image</label>
-  <input type="file" name="thumbnail" accept="image/*">
+  <label style="color:#adff2f; font-size:14px;">Video File (.mp4):</label>
+  <input type="file" name="video" accept="video/mp4" style="color:white;">
 
-  <label>Upload Video File (MP4)</label>
-  <input type="file" name="video" accept="video/*">
+  <label style="color:#adff2f; font-size:14px;">Thumbnail (.jpg, .png):</label>
+  <input type="file" name="thumbnail" accept="image/*" style="color:white;">
 
-  <label>OR Embed Video Code (Iframe HTML)</label>
-<textarea name="embed_code" placeholder='<iframe src="...">' style="height: 100px; background-color: #2a2a2a; color: white; border: 1px solid #333; border-radius: 8px; margin-top: 5px;"></textarea>
+  <input type="text" name="embed_code" placeholder="Embed Code (optional)" style="flex:1 1 350px; padding:10px; border-radius:8px; background:#222; color:white;">
 
-  <label>Make this video premium?</label>
+  <div style="flex:1 1 100%; display:flex; align-items:center;">
+    <input type="checkbox" name="is_premium" id="is_premium" style="margin-right:8px;">
+    <label for="is_premium" style="color:#adff2f;">Premium Video 💎</label>
+  </div>
 
-  <select name="is_premium">
-    <option value="0">No</option>
-    <option value="1">Yes</option>
-  </select>
-
-  <button type="submit">Upload / Add Video</button>
+  <button type="submit" style="background:#adff2f; color:black; font-weight:bold; padding:12px 25px; border:none; border-radius:8px; cursor:pointer;">Upload</button>
 </form>
 
-</body>
-</html>
+<h3 style="text-align:center; color:#adff2f; margin-top:20px;">📺 Uploaded Videos</h3>
+{% endblock %}
