@@ -599,6 +599,15 @@ def premium():
 def chatroom():
     return render_template('chatroom.html')
 
+@app.route("/debug")
+def debug():
+    try:
+        # Try fetching a video from the database
+        result = db.session.execute(db.select(Video)).first()
+        return f"Connected to DB. First video: {result}"
+    except Exception as e:
+        return f"Error: {str(e)}"
+
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     os.makedirs(PROFILE_PICS_FOLDER, exist_ok=True)
