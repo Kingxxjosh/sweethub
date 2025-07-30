@@ -608,12 +608,12 @@ def debug():
     except Exception as e:
         return f"Error: {str(e)}"
 
+# ✅ Ensure tables are created on Render and local
+with app.app_context():
+    db.create_all()
+
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     os.makedirs(PROFILE_PICS_FOLDER, exist_ok=True)
-
-    # ✅ Ensure database tables are created on Render
-    with app.app_context():
-        db.create_all()
 
     socketio.run(app, debug=True)
