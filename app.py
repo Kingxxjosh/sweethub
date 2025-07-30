@@ -596,6 +596,10 @@ def premium():
 def chatroom():
     return render_template('chatroom.html')
 
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     os.makedirs(PROFILE_PICS_FOLDER, exist_ok=True)
