@@ -19,10 +19,13 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 app = Flask(__name__)
 app.secret_key = 'sweet_secret_key'
 
-# ✅ Configure SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+# ✅ Manually create tables at startup
+with app.app_context():
+    db.create_all()
 
 # ✅ Define Video model
 class Video(db.Model):
@@ -595,10 +598,6 @@ def premium():
 @app.route('/chatroom')
 def chatroom():
     return render_template('chatroom.html')
-
-@app.before_first_request
-def create_tables():
-    db.create_all()
 
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
