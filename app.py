@@ -611,5 +611,9 @@ def debug():
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     os.makedirs(PROFILE_PICS_FOLDER, exist_ok=True)
-    socketio.run(app, debug=True)
 
+    # ✅ Ensure database tables are created on Render
+    with app.app_context():
+        db.create_all()
+
+    socketio.run(app, debug=True)
